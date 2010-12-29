@@ -5,7 +5,8 @@ local repr = require "charon.repr"
 local ntests = 0
 local nfail = 0
 local function test(msg, fun)
-    io.stdout:write("Testing ", msg, ": "):flush()
+    io.stdout:write("Testing ", msg, ": ")
+    io.stdout:flush()
     local err
     if not xpcall(fun,
         function(e)
@@ -65,6 +66,10 @@ do
     test("partial function application (2)", function() partial(f, 1, 2)(3, 4, 5)          end)
     test("partial function application (3)", function() partial(partial(f, 1, 2), 3)(4, 5) end)
     test("partial function application (4)", function() partial(f, 1, 2, 3, 4, 5)()        end)
+    test("partial function application, repeated", function()
+        local p1 = partial(f, 1, 2, 3)
+        p1(4, 5); p1(4, 5); p1(4, 5)
+    end)
 end
 
 do
