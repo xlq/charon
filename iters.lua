@@ -173,4 +173,41 @@ function iters.getter(k)
     end
 end
 
+-- Return an iterator over the last n results from iterable.
+function iters.tail(iterable, n)
+    if n < 1 then return iters.range(0); end
+    local i, j, t
+    i = 1
+    t = {}
+    for x in iters.iter(iterable) do
+        t[i] = x
+        i = i % n + 1
+    end
+    -- Return last n items
+    local j = i
+    --[[
+    local j, result, resulti = i, {}, 1
+    repeat
+        local line = t[j]
+        if line then
+            result[resulti] = line
+            resulti = resulti + 1
+        end
+        j = j % n + 1
+    until j == i
+    return result
+    --]]
+    return function()
+        while j do
+            local line = t[j]
+            j = j % n + 1
+            if j == i then
+                -- This is the last item. Stop.
+                j = nil
+            end
+            if line then return line; end
+        end
+    end
+end
+
 return iters

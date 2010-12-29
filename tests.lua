@@ -310,6 +310,13 @@ do
     test("iters.getter", function()
         equal_iter(iters.map(iters.getter("a"), {{a=1,b=2},{5,4,b=1,a=2},{}}), 1,2)
     end)
+
+    test("iters.tail", function()
+        equal_iter(iters.tail({1,2,3,4,5}, 2), 4,5)
+        equal_iter(iters.tail({1,2,3,4,5}, 0))
+        equal_iter(iters.tail({1,2,3,4,5}, 5), 1,2,3,4,5)
+        equal_iter(iters.tail({1,2,3}, 5), 1,2,3)
+    end)
 end
 
 do
